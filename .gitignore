@@ -6,6 +6,9 @@
 *api_key*
 *secret*
 
+# Streamlit secrets
+.streamlit/secrets.toml
+
 # Data files
 data/
 *.csv
