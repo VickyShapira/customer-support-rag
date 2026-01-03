@@ -363,37 +363,93 @@ Each layer solves a distinct problem:
 ## 📈 Evaluation Framework
 
 ### Metrics Tracked
-- **Accuracy**: Category prediction correctness
-- **Latency**: End-to-end response time
-- **Retrieval Quality**: Top-k accuracy, MRR
-- **Cost**: API token consumption
+
+- **Accuracy**: Category prediction correctness (top-1, top-3, top-5)
+- **Latency**: End-to-end response time broken down by component (retrieval, generation, total)
+- **Retrieval Quality**: Top-k accuracy, MRR (Mean Reciprocal Rank), NDCG
+- **Conversation Context**: Turn-level accuracy for multi-turn scenarios
+- **Cost**: API token consumption for generation
 
 ### Testing Strategy
-- **Proper train/test separation**: No data leakage (70/30 split)
-- **Comprehensive evaluation**: Full 3,080-sample test set
-- **Parallel processing**: 10 workers for efficient evaluation
-- **Multi-turn scenarios**: 6 realistic conversation scenarios testing context handling
-- **Confusion matrix analysis**: Identifying failure patterns and overlapping categories
 
-### Example Evaluation
+#### Single-Turn Evaluation (BANKING77 Test Set)
+
+- Proper train/test separation: No data leakage (70/30 split)
+- Comprehensive evaluation: Full 3,080-sample test set from BANKING77
+- Parallel processing: 10 workers for efficient evaluation (~2 minutes per run)
+- Multiple query types: Short queries, negation queries, complex multi-clause questions
+- Confusion matrix analysis: Identifying failure patterns and semantically overlapping categories
+
+#### Multi-Turn Conversation Evaluation
+
+- 15 realistic conversation scenarios testing context understanding across 50 total turns
+- Context-dependent queries: Testing pronoun resolution, topic tracking, implicit references
+- Three-way pipeline comparison: Original (basic) → Smart (LLM disambiguation) → Combined (Smart + Contextual)
+- Scenario types: International transfers, card issues, ATM problems, top-up questions, pronoun-heavy follow-ups, implicit comparisons, topic switches
+- Success threshold: 75% accuracy per scenario (≥3/4 turns correct)
+- Metrics: Overall turn accuracy, context-dependent accuracy, context-independent accuracy, scenario pass rate
+
+### Example Evaluation: Multi-Turn Context Understanding
 
 ```python
-# Run evaluation on test set (see notebooks for detailed implementation)
+# Evaluate contextual retrieval (see notebooks/07_contextual_pipeline_evaluation.pdf)
 from src.rag_pipeline import RAGPipeline
 
-# Initialize pipeline
-rag = RAGPipeline(vector_db_path="./vector_db", model="gpt-4o-mini")
+# Test three pipeline configurations
+pipelines = {
+    "Original": RAGPipeline(
+        vector_db_path="./data/vector_db",
+        model="gpt-4o-mini",
+        use_contextual_retriever=False,
+        use_smart_retriever=False
+    ),
+    "Smart": RAGPipeline(
+        vector_db_path="./data/vector_db",
+        model="gpt-4o-mini",
+        use_contextual_retriever=False,
+        use_smart_retriever=True  # LLM disambiguation
+    ),
+    "Combined": RAGPipeline(
+        vector_db_path="./data/vector_db",
+        model="gpt-4o-mini",
+        use_contextual_retriever=True,  # Context tracking
+        use_smart_retriever=True        # LLM disambiguation
+    )
+}
 
-# Evaluate on test samples
-correct = 0
-for sample in test_set:
-    response = rag.query(sample['text'], n_results=3)
-    predicted_category = response['category']
-    if predicted_category == sample['category']:
-        correct += 1
+# Example scenario: Card Payment Issues
+scenario = {
+    "name": "Card Payment Issues",
+    "turns": [
+        {"query": "My card payment was declined at a store", 
+         "expected": ["declined_card_payment"]},
+        {"query": "Why did this happen?",  # Context-dependent
+         "expected": ["declined_card_payment"]},
+        {"query": "Can I fix it?",  # Context-dependent
+         "expected": ["declined_card_payment", "contactless_not_working"]}
+    ]
+}
 
-accuracy = correct / len(test_set)
-print(f"Accuracy: {accuracy:.1%}")
+# Evaluate each pipeline
+for name, pipeline in pipelines.items():
+    pipeline.reset_conversation()
+    correct = 0
+    
+    for turn in scenario["turns"]:
+        response = pipeline.query(turn["query"], n_results=5)
+        retrieved_cats = [s["category"] for s in response["sources"][:3]]
+        if any(cat in retrieved_cats for cat in turn["expected"]):
+            correct += 1
+    
+    print(f"{name}: {correct}/{len(scenario['turns'])} turns correct")
+
+# Results across 15 scenarios (50 total turns):
+# Original:  82.0% overall (41/50) | 79.4% context-dependent | 87.5% context-independent
+# Smart:     82.0% overall (41/50) | 76.5% context-dependent | 93.8% context-independent
+# Combined:  96.0% overall (48/50) | 97.1% context-dependent | 93.8% context-independent
+
+# Key Finding: Context tracking (Combined pipeline) dramatically improves
+# context-dependent turn accuracy from ~77-79% to 97.1%
 ```
 
 ## 🎓 Key Learnings
