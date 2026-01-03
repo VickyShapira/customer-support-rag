@@ -556,6 +556,8 @@ rag = RAGPipeline(
 The project includes comprehensive evaluation across all pipeline stages:
 
 ### Notebooks
+- **[01_eda.ipynb](notebooks/01_eda.ipynb)**: Exploratory data analysis of BANKING77 dataset
+- **[02_build_knowledge_base.ipynb](notebooks/02_build_knowledge_base.ipynb)**: Vector database construction with OpenAI embeddings
 - **[03_knowledge_base_analysis.ipynb](notebooks/03_knowledge_base_analysis.ipynb)**: Baseline accuracy evaluation (90.5%)
 - **[04_cross_encoder_reranking_comparison.ipynb](notebooks/04_cross_encoder_reranking_comparison.ipynb)**: Reranking impact analysis (+0.8% improvement, 90.5% → 91.3%)
 - **[05_confusion_matrix_analysis.ipynb](notebooks/05_confusion_matrix_analysis.ipynb)**: Category confusion identification → drives Smart Retrieval design

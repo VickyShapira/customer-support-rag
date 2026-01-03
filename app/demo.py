@@ -223,7 +223,7 @@ with st.sidebar:
     - OpenAI Embeddings
     - ChromaDB
 
-    [📖 README](https://github.com/VickyShapira/banking-rag-system) |
+    [📖 README](https://github.com/VickyShapira/customer-support-rag) |
     [💻 GitHub](https://github.com/VickyShapira)
     """)
 
@@ -598,7 +598,7 @@ with col1:
 
 with col2:
     st.markdown("**🔗 Resources**")
-    st.caption("[📖 README](https://github.com/VickyShapira/banking-rag-system) • [💻 GitHub](https://github.com/VickyShapira) • [📓 Notebooks](https://github.com/VickyShapira/banking-rag-system/tree/main/notebooks)")
+    st.caption("[📖 README](https://github.com/VickyShapira/customer-support-rag) • [💻 GitHub](https://github.com/VickyShapira) • [📓 Notebooks](https://github.com/VickyShapira/customer-support-rag/tree/main/notebooks)")
 
 with col3:
     st.markdown("**👤 Author**")
