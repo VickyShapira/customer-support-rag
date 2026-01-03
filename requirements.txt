@@ -1,0 +1,20 @@
+# Core dependencies
+openai>=1.0.0
+chromadb>=0.4.0
+python-dotenv>=1.0.0
+sentence-transformers>=2.2.0
+
+# Web frameworks (optional, for future API/UI)
+fastapi>=0.104.0
+uvicorn>=0.24.0
+streamlit>=1.28.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+tqdm>=4.66.0
+
+# Testing dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-timeout>=2.1.0

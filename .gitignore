@@ -1,0 +1,51 @@
+# Environment variables
+.env
+*.env
+
+# API Keys
+*api_key*
+*secret*
+
+# Data files
+data/
+*.csv
+*.json
+vector_db/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Temporary/junk files
+nul
+*.swp
+*~
+current_packages.txt
+=*
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+test_db/
+
+# Analysis outputs
+analysis/
+visualizations/
