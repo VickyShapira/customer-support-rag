@@ -9,11 +9,11 @@
 # Streamlit secrets
 .streamlit/secrets.toml
 
-# Data files
-data/
+# Data files (except vector_db which is tracked by Git LFS)
+# data/
 *.csv
 *.json
-vector_db/
+# vector_db/
 
 # Python
 __pycache__/
