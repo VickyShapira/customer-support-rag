@@ -104,7 +104,7 @@ Final Response
 | Context-dependent | 79.4% | 97.1% | **+17.7%** ✨ |
 | Scenario success rate | 53.3% | 100.0% | +46.7% |
 
-**Test Set:** 6 realistic conversation scenarios with multi-turn exchanges
+**Test Set:** 15 realistic conversation scenarios with multi-turn exchanges
 **Single-Turn Baseline:** 90.5% accuracy on 3,080 test queries (see [Pipeline Evolution](#pipeline-evolution--impact) below)
 
 **Key Insight:** The 3-layer architecture's value is in **conversational AI**, not single-turn retrieval. Context-dependent queries saw 17.7% improvement - these are the "Why?" and "How long?" follow-ups that require understanding conversation history.
