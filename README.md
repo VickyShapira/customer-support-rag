@@ -5,7 +5,7 @@
 ![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-82%25-yellowgreen)
 
-**[🎬 Try Live Demo](https://customer-support-rag.streamlit.app)** | **[📊 View Analysis Notebooks](notebooks/)**
+**[🎬 Try Live Demo](https://customer-support-rag-hpq3hx5mss9gbthdwypbw5.streamlit.app)** | **[📊 View Analysis Notebooks](notebooks/)**
 
 A production-ready RAG system with **3-layer intelligent retrieval** for banking customer support, improving multi-turn conversation accuracy from **82% to 96%** through contextual reformulation and LLM disambiguation.
 
